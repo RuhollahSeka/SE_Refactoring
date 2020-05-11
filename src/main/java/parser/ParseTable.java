@@ -11,8 +11,8 @@ import java.util.Map;
  * Created by mohammad hosein on 6/25/2015.
  */
 public class ParseTable {
-    private List<Map<Token, Action>> actionTable = new ArrayList<>();
-    private List<Map<NonTerminal, Integer>> gotoTable = new ArrayList<>();
+    private List<Map<Token, Action>> actionTables = new ArrayList<>();
+    private List<Map<NonTerminal, Integer>> gotoTables = new ArrayList<>();
 
     private Map<Integer, Token> terminals = new HashMap<>();
     private Map<Integer, NonTerminal> nonTerminals = new HashMap<>();
@@ -25,26 +25,47 @@ public class ParseTable {
         extractSymbols(firstRow);
 
         for (int i = 1; i < rows.length; i++) {
-            rows[i] = rows[i].substring(1, rows[i].length() - 1);
-            String[] cols = rows[i].split("\",\"");
-            actionTable.add(new HashMap<>());
-            gotoTable.add(new HashMap<>());
-            for (int j = 1; j < cols.length; j++) {
-                if (cols[j].equals("")) {
-                    continue;
-                }
+            String row = rows[i].substring(1, rows[i].length() - 1);
+            updateTables(row);
+        }
+    }
 
-                if (cols[j].equals("acc")) {
-                    actionTable.get(actionTable.size() - 1).put(terminals.get(j), new Action(act.accept, 0));
-                } else if (terminals.containsKey(j)) {
-                    Token t = terminals.get(j);
-                    Action a = new Action(cols[j].charAt(0) == 'r' ? act.reduce : act.shift, Integer.parseInt(cols[j].substring(1)));
-                    actionTable.get(actionTable.size() - 1).put(t, a);
-                } else if (nonTerminals.containsKey(j)) {
-                    gotoTable.get(gotoTable.size() - 1).put(nonTerminals.get(j), Integer.parseInt(cols[j]));
-                } else {
-                    throw new Exception();
-                }
+    private void updateTables(String row) throws Exception {
+        String[] columns = row.split("\",\"");
+
+        actionTables.add(new HashMap<>());
+        gotoTables.add(new HashMap<>());
+
+        for (int j = 1; j < columns.length; j++) {
+            String column = columns[j];
+            if (column.equals("")) {
+                continue;
+            }
+
+            if (column.equals("acc")) {
+                Map<Token, Action> actionsTable = actionTables.get(actionTables.size() - 1);
+
+                Token token = terminals.get(j);
+                Action action = new Action(act.accept, 0);
+                actionsTable.put(token, action);
+
+            } else if (terminals.containsKey(j)) {
+                Map<Token, Action> actionTable = actionTables.get(actionTables.size() - 1);
+                Token token = terminals.get(j);
+
+                act a = column.charAt(0) == 'r' ? act.reduce : act.shift;
+                int number = Integer.parseInt(column.substring(1));
+                Action action = new Action(a, number);
+                actionTable.put(token, action);
+
+            } else if (nonTerminals.containsKey(j)) {
+                Map<NonTerminal, Integer> gotoTable = gotoTables.get(gotoTables.size() - 1);
+                NonTerminal nonTerminal = nonTerminals.get(j);
+                int number = Integer.parseInt(column);
+
+                gotoTable.put(nonTerminal, number);
+            } else {
+                throw new Exception();
             }
         }
     }
@@ -68,11 +89,11 @@ public class ParseTable {
     }
 
     public int getGotoTable(int currentState, NonTerminal variable) {
-        return gotoTable.get(currentState).get(variable);
+        return gotoTables.get(currentState).get(variable);
     }
 
     public Action getActionTable(int currentState, Token terminal) {
-        return actionTable.get(currentState).get(terminal);
+        return actionTables.get(currentState).get(terminal);
     }
 
 }
