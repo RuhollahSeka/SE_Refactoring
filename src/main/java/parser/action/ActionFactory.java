@@ -1,6 +1,6 @@
 package parser.action;
 
-public class ActionFactory {
+public final class ActionFactory {
     private ActionFactory() {}
 
     public static Action createAction(String actionType) {
