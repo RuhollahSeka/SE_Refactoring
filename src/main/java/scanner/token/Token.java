@@ -19,6 +19,23 @@ public class Token {
         this.value = value;
     }
 
+    private Type getTypeFromString(String s) {
+        Pattern pattern;
+        Matcher matcher;
+        for (Type t : Type.values()) {
+            if (t.toString().equals(s))
+                return t;
+        }
+        for (Type t : Type.values()) {
+            pattern = Pattern.compile(t.pattern);
+            matcher = pattern.matcher(s);
+            if (matcher.matches())
+                return t;
+        }
+
+        throw new IllegalArgumentException();
+    }
+
     @Override
     public String toString() {
         return String.format("(%s,%s)", type.name(), value);
@@ -43,22 +60,5 @@ public class Token {
         if(type == Type.KEYWORDS)
             result = prime * result + (value == null ? 0 : value.hashCode());
         return result;
-    }
-
-    public static Type getTypeFromString(String s) {
-        Pattern pattern;
-        Matcher matcher;
-        for (Type t : Type.values()) {
-            if (t.toString().equals(s))
-                return t;
-        }
-        for (Type t : Type.values()) {
-            pattern = Pattern.compile(t.pattern);
-            matcher = pattern.matcher(s);
-            if (matcher.matches())
-                return t;
-        }
-
-        throw new IllegalArgumentException();
     }
 }
