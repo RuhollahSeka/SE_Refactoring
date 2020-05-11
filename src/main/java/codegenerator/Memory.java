@@ -26,22 +26,24 @@ public class Memory {
         lastTempIndex += TEMP_SIZE;
         return lastTempIndex - TEMP_SIZE;
     }
-    public  int getDateAddress(){
+
+    public int getDateAddress() {
         lastDataAddress += DATA_SIZE;
-        return lastDataAddress- DATA_SIZE;
+        return lastDataAddress - DATA_SIZE;
     }
+
     public int saveMemory() {
         codeBlock.add(new ThreeAddressCode());
         return codeBlock.size() - 1;
     }
 
     public void addThreeAddressCode(Operation op, Address opr1, Address opr2, Address opr3) {
-        codeBlock.add(new ThreeAddressCode(op,opr1,opr2,opr3));
+        codeBlock.add(new ThreeAddressCode(op, opr1, opr2, opr3));
     }
 
     public void addThreeAddressCode(int i, Operation op, Address opr1, Address opr2, Address opr3) {
         codeBlock.remove(i);
-        codeBlock.add(i, new ThreeAddressCode(op, opr1, opr2,opr3));
+        codeBlock.add(i, new ThreeAddressCode(op, opr1, opr2, opr3));
     }
 
 
