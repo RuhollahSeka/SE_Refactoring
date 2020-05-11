@@ -1,7 +1,6 @@
 package parser.action;
 
 import codegenerator.CodeGenerator;
-import log.Log;
 import parser.ParseTable;
 import parser.Parser;
 import parser.Rule;
@@ -23,10 +22,7 @@ public class ReduceAction extends Action {
 
         ParseTable parseTable = parser.getParseTable();
         int parseStackTop = parser.peekParseStack();
-
-        Log.print(parseStackTop + "\t" + rule.getLHS());
         parser.pushToStack(parseTable.getGotoTable(parseStackTop, rule.getLHS()));
-        Log.print(parseStackTop + "");
 
         CodeGenerator codeGenerator = parser.getCodeGenerator();
         codeGenerator.semanticFunction(rule.getSemanticAction(), lookahead);

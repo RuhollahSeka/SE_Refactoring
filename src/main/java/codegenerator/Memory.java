@@ -1,5 +1,7 @@
 package codegenerator;
 
+import log.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -48,9 +50,9 @@ public class Memory {
     }
 
     public void pintCodeBlock() {
-        System.out.println("Code Block");
+        Log.print("Code Block");
         for (int i = 0; i < codeBlock.size(); i++) {
-            System.out.println(i + " : " + codeBlock.get(i).toString());
+            Log.print(i + " : " + codeBlock.get(i).toString());
         }
     }
 }

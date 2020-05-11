@@ -3,7 +3,6 @@ package parser;
 
 import codegenerator.CodeGenerator;
 import errorhandler.ErrorHandler;
-import log.Log;
 import parser.action.AcceptAction;
 import parser.action.Action;
 import scanner.LexicalAnalyzer;
@@ -47,13 +46,9 @@ public class Parser {
         Action currentAction = null;
         while (!(currentAction instanceof AcceptAction)) {
             try {
-                Log.print(lookAhead.toString() + "\t" + parsStack.peek());
                 currentAction = parseTable.getActionTable(parsStack.peek(), lookAhead);
-                Log.print(currentAction.toString());
-
                 currentAction.takeAction(this, lookAhead);
                 lookAhead = currentAction.getNextLookahead(this.lexicalAnalyzer, lookAhead);
-                Log.print("");
             } catch (Exception e) {
                 e.printStackTrace();
             }
