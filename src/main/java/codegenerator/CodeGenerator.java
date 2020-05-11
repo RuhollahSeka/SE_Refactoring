@@ -208,9 +208,24 @@ public class CodeGenerator {
         Address temp = new Address(memory.getTemp(), t);
         ss.push(temp);
 
-        memory.addThreeAddressCode(Operation.ASSIGN, new Address(temp.num, VarType.ADDRESS, TypeAddress.Imidiate), new Address(symbolTable.getMethodReturnAddress(className, methodName), VarType.ADDRESS), null);
-        memory.addThreeAddressCode(Operation.ASSIGN, new Address(memory.getCurrentCodeBlockAddress() + 2, VarType.ADDRESS, TypeAddress.Imidiate), new Address(symbolTable.getMethodCallerAddress(className, methodName), VarType.ADDRESS), null);
-        memory.addThreeAddressCode(Operation.JP, new Address(symbolTable.getMethodAddress(className, methodName), VarType.ADDRESS), null, null);
+        memory.addThreeAddressCode(
+                Operation.ASSIGN,
+                new Address(temp.num, VarType.ADDRESS, TypeAddress.Imidiate),
+                new Address(symbolTable.getMethodReturnAddress(className, methodName), VarType.ADDRESS),
+                null
+        );
+        memory.addThreeAddressCode(
+                Operation.ASSIGN,
+                new Address(memory.getCurrentCodeBlockAddress() + 2, VarType.ADDRESS, TypeAddress.Imidiate),
+                new Address(symbolTable.getMethodCallerAddress(className, methodName), VarType.ADDRESS),
+                null
+        );
+        memory.addThreeAddressCode(
+                Operation.JP,
+                new Address(symbolTable.getMethodAddress(className, methodName), VarType.ADDRESS),
+                null,
+                null
+        );
     }
 
     private void arg() {
@@ -285,18 +300,36 @@ public class CodeGenerator {
     }
 
     private void whileLoop() {
-        memory.addThreeAddressCode(ss.pop().num, Operation.JPF, ss.pop(), new Address(memory.getCurrentCodeBlockAddress() + 1, VarType.ADDRESS), null);
+        memory.addThreeAddressCode(
+                ss.pop().num,
+                Operation.JPF,
+                ss.pop(),
+                new Address(memory.getCurrentCodeBlockAddress() + 1, VarType.ADDRESS),
+                null
+        );
         memory.addThreeAddressCode(Operation.JP, ss.pop(), null, null);
     }
 
     private void saveJpf() {
         Address save = new Address(memory.saveMemory(), VarType.ADDRESS);
-        memory.addThreeAddressCode(ss.pop().num, Operation.JPF, ss.pop(), new Address(memory.getCurrentCodeBlockAddress(), VarType.ADDRESS), null);
+        memory.addThreeAddressCode(
+                ss.pop().num,
+                Operation.JPF,
+                ss.pop(),
+                new Address(memory.getCurrentCodeBlockAddress(), VarType.ADDRESS),
+                null
+        );
         ss.push(save);
     }
 
     private void jpHere() {
-        memory.addThreeAddressCode(ss.pop().num, Operation.JP, new Address(memory.getCurrentCodeBlockAddress(), VarType.ADDRESS), null, null);
+        memory.addThreeAddressCode(
+                ss.pop().num,
+                Operation.JP,
+                new Address(memory.getCurrentCodeBlockAddress(), VarType.ADDRESS),
+                null,
+                null
+        );
     }
 
     private void print() {
