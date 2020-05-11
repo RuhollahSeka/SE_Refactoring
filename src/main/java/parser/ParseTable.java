@@ -1,7 +1,6 @@
 package parser;
 
 import scanner.token.Token;
-import scanner.type.Type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,8 +61,7 @@ public class ParseTable {
                     nonTerminals.put(i, NonTerminal.valueOf(temp));
                 } catch (Exception ignored) {}
             } else {
-                Type columnType = Token.getTypeFromString(column);
-                Token token = new Token(columnType, column);
+                Token token = new Token(column);
                 terminals.put(i, token);
             }
         }
