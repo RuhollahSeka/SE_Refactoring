@@ -40,11 +40,11 @@ public class ParseTable {
 
         for (int j = 1; j < columns.length; j++) {
             String column = columns[j];
-            if (column.equals("")) {
+            if ("".equals(column)) {
                 continue;
             }
 
-            if (column.equals("acc") || terminals.containsKey(j)) {
+            if ("acc".equals(column) || terminals.containsKey(j)) {
                 Map<Token, Action> actionsTable = actionTables.get(actionTables.size() - 1);
 
                 Token token = terminals.get(j);

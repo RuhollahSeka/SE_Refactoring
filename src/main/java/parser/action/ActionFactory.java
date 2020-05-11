@@ -4,7 +4,7 @@ public final class ActionFactory {
     private ActionFactory() {}
 
     public static Action createAction(String actionType) {
-        if (actionType.equals("acc")) {
+        if ("acc".equals(actionType)) {
             return new AcceptAction();
         } else if (actionType.startsWith("r")) {
             int ruleNumber = Integer.parseInt(actionType.substring(1));
