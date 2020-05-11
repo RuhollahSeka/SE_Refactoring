@@ -1,65 +1,48 @@
 package parser;
 
-import scanner.token.Token;
-
-import java.util.ArrayList;
-
 /**
  * Created by mohammad hosein on 6/25/2015.
  */
 public class Rule {
+    private NonTerminal LHS;
+    private int RHSLength = 0;
+    private int semanticAction = 0;
+
+
     public Rule(String stringRule) {
         int index = stringRule.indexOf("#");
         if (index != -1) {
             try {
-            semanticAction = Integer.parseInt(stringRule.substring(index + 1));
-            }catch (NumberFormatException ex){
-                semanticAction = 0;
+                this.semanticAction = Integer.parseInt(stringRule.substring(index + 1));
+            } catch (NumberFormatException ignored) {
+
             }
             stringRule = stringRule.substring(0, index);
-        } else {
-            semanticAction = 0;
         }
-        String[] splited = stringRule.split("->");
-//        try {
-            LHS = NonTerminal.valueOf(splited[0]);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-        RHS = new ArrayList<GrammarSymbol>();
-        if (splited.length > 1) {
-            String[] RHSs = splited[1].split(" ");
-            for (String s : RHSs){
-                try {
-                    RHS.add(new GrammarSymbol(NonTerminal.valueOf(s)));
-                } catch (Exception e) {
-//                    try{
-                        RHS.add(new GrammarSymbol(new Token(s)));
-//                    }catch (IllegalArgumentException d){
-//                        d.printStackTrace();
-//                        log.print(s);
-//                    }
-                }
-            }
-        }
-    }
-    public NonTerminal LHS;
-    public ArrayList<GrammarSymbol> RHS;
-    public int semanticAction;
-}
 
-class GrammarSymbol{
-    public boolean isTerminal;
-    public NonTerminal nonTerminal;
-    public Token terminal;
-    public GrammarSymbol(NonTerminal nonTerminal)
-    {
-        this.nonTerminal = nonTerminal;
-        isTerminal = false;
+        String[] splited = stringRule.split("->");
+        this.LHS = NonTerminal.valueOf(splited[0]);
+        initRHS(splited);
     }
-    public GrammarSymbol(Token terminal)
-    {
-        this.terminal = terminal;
-        isTerminal = true;
+
+    private void initRHS(String[] splitRules) {
+        if (splitRules.length <= 1) {
+            return;
+        }
+
+        String[] RHSs = splitRules[1].split(" ");
+        this.RHSLength = RHSs.length;
+    }
+
+    public NonTerminal getLHS() {
+        return LHS;
+    }
+
+    public int getSemanticAction() {
+        return semanticAction;
+    }
+
+    public int getRHSLength() {
+        return this.RHSLength;
     }
 }
