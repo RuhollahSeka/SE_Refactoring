@@ -2,7 +2,7 @@ package parser;
 
 
 import codegenerator.CodeGenerator;
-import errorhandler.ErrorHandler;
+import errorhandler.ErrorUtils;
 import parser.action.AcceptAction;
 import parser.action.Action;
 import scanner.LexicalAnalyzer;
@@ -53,7 +53,7 @@ public class Parser {
                 e.printStackTrace();
             }
         }
-        if (!ErrorHandler.hasError) {
+        if (!ErrorUtils.hasError) {
             codeGenerator.printMemory();
         }
     }

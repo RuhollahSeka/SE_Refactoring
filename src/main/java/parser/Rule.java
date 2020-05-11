@@ -30,8 +30,8 @@ public class Rule {
             return;
         }
 
-        String[] RHSs = splitRules[1].split(" ");
-        this.RHSLength = RHSs.length;
+        String[] allRHSs = splitRules[1].split(" ");
+        this.RHSLength = allRHSs.length;
     }
 
     public NonTerminal getLHS() {

@@ -1,6 +1,6 @@
 package scanner;
 
-import errorhandler.ErrorHandler;
+import errorhandler.ErrorUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +33,7 @@ public class LexicalAnalyzer {
 
                     }
                     if(matcher.group(Type.ErrorID.name())!=null){
-                        ErrorHandler.printError("The id must start with character");
+                        ErrorUtils.printError("The id must start with character");
                         break;
                     }
 
