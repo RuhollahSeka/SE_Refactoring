@@ -6,7 +6,7 @@ import errorhandler.ErrorHandler;
 import parser.action.AcceptAction;
 import parser.action.Action;
 import scanner.LexicalAnalyzer;
-import scanner.token.Token;
+import scanner.Token;
 
 import java.io.IOException;
 import java.nio.file.Files;

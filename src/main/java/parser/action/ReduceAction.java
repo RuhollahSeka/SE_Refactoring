@@ -4,7 +4,7 @@ import codegenerator.CodeGenerator;
 import parser.ParseTable;
 import parser.Parser;
 import parser.Rule;
-import scanner.token.Token;
+import scanner.Token;
 
 public class ReduceAction extends Action {
     private int ruleNumber;

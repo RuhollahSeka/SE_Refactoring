@@ -1,4 +1,4 @@
-package scanner.type;
+package scanner;
 
 /**
  * Created by Alireza on 2015-05-26.

@@ -1,8 +1,6 @@
 package scanner;
 
 import errorhandler.ErrorHandler;
-import scanner.token.Token;
-import scanner.type.Type;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

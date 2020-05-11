@@ -2,7 +2,7 @@ package parser;
 
 import parser.action.Action;
 import parser.action.ActionFactory;
-import scanner.token.Token;
+import scanner.Token;
 
 import java.util.ArrayList;
 import java.util.HashMap;

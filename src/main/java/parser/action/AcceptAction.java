@@ -1,7 +1,7 @@
 package parser.action;
 
 import parser.Parser;
-import scanner.token.Token;
+import scanner.Token;
 
 public class AcceptAction extends Action {
     @Override

@@ -2,7 +2,7 @@ package parser.action;
 
 import parser.Parser;
 import scanner.LexicalAnalyzer;
-import scanner.token.Token;
+import scanner.Token;
 
 public abstract class Action {
     public abstract void takeAction(Parser parser, Token lookahead);

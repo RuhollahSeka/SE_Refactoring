@@ -1,7 +1,7 @@
 package codegenerator;
 
 import errorhandler.ErrorHandler;
-import scanner.token.Token;
+import scanner.Token;
 import semantic.symbol.Symbol;
 import semantic.symbol.SymbolTable;
 import semantic.symbol.SymbolType;

@@ -2,7 +2,7 @@ package parser.action;
 
 import parser.Parser;
 import scanner.LexicalAnalyzer;
-import scanner.token.Token;
+import scanner.Token;
 
 public class ShiftAction extends Action {
     private int state;
