@@ -1,5 +1,7 @@
 package parser;
 
+import parser.action.Action;
+import parser.action.ActionFactory;
 import scanner.token.Token;
 
 import java.util.ArrayList;
@@ -42,22 +44,12 @@ public class ParseTable {
                 continue;
             }
 
-            if (column.equals("acc")) {
+            if (column.equals("acc") || terminals.containsKey(j)) {
                 Map<Token, Action> actionsTable = actionTables.get(actionTables.size() - 1);
 
                 Token token = terminals.get(j);
-                Action action = new Action(act.accept, 0);
+                Action action = ActionFactory.createAction(column);
                 actionsTable.put(token, action);
-
-            } else if (terminals.containsKey(j)) {
-                Map<Token, Action> actionTable = actionTables.get(actionTables.size() - 1);
-                Token token = terminals.get(j);
-
-                act a = column.charAt(0) == 'r' ? act.reduce : act.shift;
-                int number = Integer.parseInt(column.substring(1));
-                Action action = new Action(a, number);
-                actionTable.put(token, action);
-
             } else if (nonTerminals.containsKey(j)) {
                 Map<NonTerminal, Integer> gotoTable = gotoTables.get(gotoTables.size() - 1);
                 NonTerminal nonTerminal = nonTerminals.get(j);

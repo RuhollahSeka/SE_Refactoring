@@ -1,10 +1,12 @@
 package parser;
 
 
-import log.Log;
 import codegenerator.CodeGenerator;
 import errorhandler.ErrorHandler;
-import scanner.lexicalAnalyzer;
+import log.Log;
+import parser.action.AcceptAction;
+import parser.action.Action;
+import scanner.LexicalAnalyzer;
 import scanner.token.Token;
 
 import java.io.IOException;
@@ -19,8 +21,8 @@ public class Parser {
     private List<Rule> rules = new ArrayList<>();
     private Stack<Integer> parsStack = new Stack<>();
     private ParseTable parseTable;
-    private lexicalAnalyzer lexicalAnalyzer;
-    private CodeGenerator cg = new CodeGenerator();
+    private LexicalAnalyzer lexicalAnalyzer;
+    private CodeGenerator codeGenerator = new CodeGenerator();
 
     public Parser() {
         parsStack.push(0);
@@ -40,61 +42,48 @@ public class Parser {
     }
 
     public void startParse(java.util.Scanner sc) {
-        lexicalAnalyzer = new lexicalAnalyzer(sc);
+        lexicalAnalyzer = new LexicalAnalyzer(sc);
         Token lookAhead = lexicalAnalyzer.getNextToken();
-        boolean finish = false;
-        Action currentAction;
-        while (!finish) {
+        Action currentAction = null;
+        while (!(currentAction instanceof AcceptAction)) {
             try {
                 Log.print(lookAhead.toString() + "\t" + parsStack.peek());
                 currentAction = parseTable.getActionTable(parsStack.peek(), lookAhead);
                 Log.print(currentAction.toString());
 
-                switch (currentAction.action) {
-                    case shift:
-                        parsStack.push(currentAction.number);
-                        lookAhead = lexicalAnalyzer.getNextToken();
-
-                        break;
-                    case reduce:
-                        Rule rule = rules.get(currentAction.number);
-                        for (int i = 0; i < rule.getRHSLength(); i++) {
-                            parsStack.pop();
-                        }
-
-                        Log.print(parsStack.peek() + "\t" + rule.getLHS());
-                        parsStack.push(parseTable.getGotoTable(parsStack.peek(), rule.getLHS()));
-                        Log.print(parsStack.peek() + "");
-
-                        try {
-                            cg.semanticFunction(rule.getSemanticAction(), lookAhead);
-                        } catch (Exception e) {
-                            Log.print("Code Genetator Error");
-                        }
-                        break;
-                    case accept:
-                        finish = true;
-                        break;
-                }
+                currentAction.takeAction(this, lookAhead);
+                lookAhead = currentAction.getNextLookahead(this.lexicalAnalyzer, lookAhead);
                 Log.print("");
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
-        if (!ErrorHandler.hasError)
-            cg.printMemory();
-
-
+        if (!ErrorHandler.hasError) {
+            codeGenerator.printMemory();
+        }
     }
 
     public void pushToStack(int state) {
         this.parsStack.push(state);
     }
 
+    public void popParseStack() {
+        this.parsStack.pop();
+    }
+
+    public int peekParseStack() {
+        return this.parsStack.peek();
+    }
+
     public Rule getRule(int ruleIndex) {
         return this.rules.get(ruleIndex);
+    }
+
+    public CodeGenerator getCodeGenerator() {
+        return codeGenerator;
+    }
+
+    public ParseTable getParseTable() {
+        return parseTable;
     }
 }
